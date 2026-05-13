@@ -18,7 +18,6 @@ import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import java.util.UUID;
-import static io.quarkus.arc.impl.UncaughtExceptions.LOGGER;
 
 @SuppressWarnings("unused")
 @ApplicationScoped
