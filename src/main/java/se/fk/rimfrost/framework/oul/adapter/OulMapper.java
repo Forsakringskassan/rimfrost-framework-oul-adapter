@@ -10,7 +10,6 @@ import se.fk.rimfrost.jaxrsspec.controllers.generatedsource.model.EndUppgiftRequ
 import se.fk.rimfrost.jaxrsspec.controllers.generatedsource.model.UppgiftResponse;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 @ApplicationScoped
 public class OulMapper
@@ -43,7 +42,7 @@ public class OulMapper
       return request;
    }
 
-   public EndUppgiftRequest toEndUppgiftRequest(UUID uppgiftId, String reason)
+   public EndUppgiftRequest toEndUppgiftRequest(String reason)
    {
       var request = new EndUppgiftRequest();
       request.setReason(reason);

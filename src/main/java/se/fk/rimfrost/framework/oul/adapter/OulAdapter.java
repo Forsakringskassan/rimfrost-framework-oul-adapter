@@ -77,7 +77,7 @@ public class OulAdapter
    {
       try
       {
-         var endUppgiftRequest = oulMapper.toEndUppgiftRequest(uppgiftId, reason);
+         var endUppgiftRequest = oulMapper.toEndUppgiftRequest(reason);
          var endUppgiftResponse = oulClient.endUppgift(uppgiftId, endUppgiftRequest);
          if (endUppgiftResponse == null)
          {
