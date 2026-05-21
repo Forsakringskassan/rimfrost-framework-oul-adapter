@@ -22,6 +22,10 @@
     </repository>
   </distributionManagement>
 
+  <properties>
+    <argLine></argLine>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -29,9 +33,9 @@
       <version>3.20.3</version>
     </dependency>
     <dependency>
-      <groupId>se.fk.rimfrost</groupId>
+      <groupId>se.fk.rimfrost.oul.management</groupId>
       <artifactId>rimfrost-service-oul-management-api-jaxrs-spec</artifactId>
-      <version>0.0.1</version>
+      <version>0.0.5</version>
     </dependency>
     <dependency>
       <groupId>se.fk.github.jaxrsclientfactory</groupId>
@@ -95,6 +99,26 @@
               <version>2.11.6</version>
             </path>
           </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/Abstract*.java</exclude>
+          </excludes>
+          <argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
         </configuration>
       </plugin>
     </plugins>

@@ -8,8 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.ImmutableCreateOperativUppgiftRequest;
+import se.fk.rimfrost.framework.oul.model.ImmutableErbjudande;
 import se.fk.rimfrost.framework.oul.model.ImmutableIdtyp;
-import se.fk.rimfrost.jaxrsspec.controllers.generatedsource.model.UppgiftResponse;
+import se.fk.rimfrost.oul.management.jaxrsspec.controllers.generatedsource.model.UppgiftResponse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -46,6 +47,8 @@ class OulMapperTest
       assertEquals(createOperativUppgiftRequest.getRoll(), result.getRoll());
       assertEquals(createOperativUppgiftRequest.getUrl(), result.getUrl());
       assertEquals(createOperativUppgiftRequest.getSubTopic(), result.getSubTopic());
+      assertEquals(createOperativUppgiftRequest.getErbjudande().getId(), result.getErbjudande().getId());
+      assertEquals(createOperativUppgiftRequest.getErbjudande().getNamn(), result.getErbjudande().getNamn());
 
       assertNotNull(result.getIndivider());
       assertEquals(createOperativUppgiftRequest.getIndivider().size(), result.getIndivider().size());
@@ -168,6 +171,7 @@ class OulMapperTest
             .url("test.com/uppgifter")
             .subTopic("test-subtopic")
             .cloudeventAttributes(Map.of("source", "test-source", "type", "test-type"))
+            .erbjudande(ImmutableErbjudande.builder().id("959b609d-7402-4ef4-ad74-8c6082c9846a").namn("VAH").build())
             .build();
    }
 }
