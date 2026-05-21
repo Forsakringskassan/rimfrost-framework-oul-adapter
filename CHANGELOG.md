@@ -2,6 +2,20 @@
 
 Changelog of rimfrost-framework-oul-adapter.
 
+## 0.0.2 (2026-05-21)
+
+### Bug Fixes
+
+-  Add support for sending erbjudande information with create request ([88f78](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/88f7899e8d596ad) Lars Persson)  
+
+### Other changes
+
+**Configure renovate**
+
+
+[60732](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/60732aaeb61d45e) Lars Persson *2026-05-21 14:06:19*
+
+
 ## 0.0.1 (2026-05-18)
 
 ### Bug Fixes
