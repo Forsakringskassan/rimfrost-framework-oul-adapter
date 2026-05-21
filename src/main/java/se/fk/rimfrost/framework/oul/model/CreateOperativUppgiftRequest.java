@@ -28,4 +28,6 @@ public interface CreateOperativUppgiftRequest
    String getSubTopic();
 
    Map<String, String> getCloudeventAttributes();
+
+   Erbjudande getErbjudande();
 }

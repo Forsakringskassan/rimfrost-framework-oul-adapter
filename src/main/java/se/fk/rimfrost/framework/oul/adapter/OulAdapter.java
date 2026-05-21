@@ -3,7 +3,7 @@ package se.fk.rimfrost.framework.oul.adapter;
 import se.fk.rimfrost.framework.oul.exception.OulException;
 import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.OperativUppgift;
-import se.fk.rimfrost.jaxrsspec.controllers.generatedsource.DefaultApi;
+import se.fk.rimfrost.oul.management.jaxrsspec.controllers.generatedsource.DefaultApi;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
