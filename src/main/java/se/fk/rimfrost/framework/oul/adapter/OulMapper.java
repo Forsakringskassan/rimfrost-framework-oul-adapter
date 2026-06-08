@@ -6,9 +6,9 @@ import se.fk.rimfrost.framework.oul.model.Erbjudande;
 import se.fk.rimfrost.framework.oul.model.Idtyp;
 import se.fk.rimfrost.framework.oul.model.ImmutableOperativUppgift;
 import se.fk.rimfrost.framework.oul.model.OperativUppgift;
-import se.fk.rimfrost.oul.management.jaxrsspec.controllers.generatedsource.model.CreateUppgiftRequest;
-import se.fk.rimfrost.oul.management.jaxrsspec.controllers.generatedsource.model.EndUppgiftRequest;
-import se.fk.rimfrost.oul.management.jaxrsspec.controllers.generatedsource.model.UppgiftResponse;
+import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.CreateUppgiftRequest;
+import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.EndUppgiftRequest;
+import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.UppgiftResponse;
 
 import java.util.HashMap;
 
@@ -66,18 +66,18 @@ public class OulMapper
       return builder.build();
    }
 
-   private se.fk.rimfrost.oul.management.jaxrsspec.controllers.generatedsource.model.Idtyp toGeneratedIdtyp(Idtyp idtyp)
+   private se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.Idtyp toGeneratedIdtyp(Idtyp idtyp)
    {
-      var generated = new se.fk.rimfrost.oul.management.jaxrsspec.controllers.generatedsource.model.Idtyp();
+      var generated = new se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.Idtyp();
       generated.setTypId(idtyp.getTypId());
       generated.setVarde(idtyp.getVarde());
       return generated;
    }
 
-   private se.fk.rimfrost.oul.management.jaxrsspec.controllers.generatedsource.model.Erbjudande toGeneratedErbjudande(
+   private se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.Erbjudande toGeneratedErbjudande(
          Erbjudande erbjudande)
    {
-      var generated = new se.fk.rimfrost.oul.management.jaxrsspec.controllers.generatedsource.model.Erbjudande();
+      var generated = new se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.Erbjudande();
       generated.setId(erbjudande.getId());
       generated.setNamn(erbjudande.getNamn());
       return generated;
