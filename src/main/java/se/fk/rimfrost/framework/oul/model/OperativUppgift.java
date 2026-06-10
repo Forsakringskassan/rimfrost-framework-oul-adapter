@@ -12,7 +12,7 @@ public interface OperativUppgift
 
    UUID getHandlaggningId();
 
-   Map<String, String> getCloudeventAttributes();
-
    String getStatus();
+
+   ProcessInfo getProcessInfo();
 }

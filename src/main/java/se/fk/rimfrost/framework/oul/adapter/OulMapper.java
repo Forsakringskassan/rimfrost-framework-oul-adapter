@@ -5,9 +5,11 @@ import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.Erbjudande;
 import se.fk.rimfrost.framework.oul.model.Idtyp;
 import se.fk.rimfrost.framework.oul.model.ImmutableOperativUppgift;
+import se.fk.rimfrost.framework.oul.model.ImmutableProcessInfo;
 import se.fk.rimfrost.framework.oul.model.OperativUppgift;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.CreateUppgiftRequest;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.EndUppgiftRequest;
+import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.ProcessInfo;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.UppgiftResponse;
 
 import java.util.HashMap;
@@ -18,6 +20,14 @@ public class OulMapper
 
    public CreateUppgiftRequest toCreateUppgiftRequest(CreateOperativUppgiftRequest createRequest)
    {
+      var processInfo = new ProcessInfo();
+      processInfo.setReplyTopic(createRequest.getProcessInfo().getReplyTopic());
+
+      if (!createRequest.getProcessInfo().getCloudeventAttributes().isEmpty())
+      {
+         processInfo.setCloudeventAttributes(new HashMap<>(createRequest.getProcessInfo().getCloudeventAttributes()));
+      }
+
       var request = new CreateUppgiftRequest();
       request.setVersion(createRequest.getVersion());
       request.setHandlaggningId(createRequest.getHandlaggningId());
@@ -28,17 +38,13 @@ public class OulMapper
       request.setUrl(createRequest.getUrl());
       request.setSubTopic(createRequest.getSubTopic());
       request.setErbjudande(toGeneratedErbjudande(createRequest.getErbjudande()));
+      request.setProcessInfo(processInfo);
 
       if (!createRequest.getIndivider().isEmpty())
       {
          request.setIndivider(createRequest.getIndivider().stream()
                .map(this::toGeneratedIdtyp)
                .toList());
-      }
-
-      if (!createRequest.getCloudeventAttributes().isEmpty())
-      {
-         request.setCloudeventAttributes(new HashMap<>(createRequest.getCloudeventAttributes()));
       }
 
       return request;
@@ -53,17 +59,19 @@ public class OulMapper
 
    public OperativUppgift toOperativUppgift(UppgiftResponse response)
    {
-      var builder = ImmutableOperativUppgift.builder()
-            .uppgiftId(response.getUppgiftId())
-            .handlaggningId(response.getHandlaggningId())
-            .status(response.getStatus());
+      var processInfoBuilder = ImmutableProcessInfo.builder()
+            .replyTopic(response.getProcessInfo().getReplyTopic());
 
-      if (response.getCloudeventAttributes() != null)
+      if (response.getProcessInfo().getCloudeventAttributes() != null)
       {
-         builder.cloudeventAttributes(new HashMap<>(response.getCloudeventAttributes()));
+         processInfoBuilder.cloudeventAttributes(new HashMap<>(response.getProcessInfo().getCloudeventAttributes()));
       }
 
-      return builder.build();
+      return ImmutableOperativUppgift.builder()
+            .uppgiftId(response.getUppgiftId())
+            .handlaggningId(response.getHandlaggningId())
+            .status(response.getStatus())
+            .processInfo(processInfoBuilder.build()).build();
    }
 
    private se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.Idtyp toGeneratedIdtyp(Idtyp idtyp)

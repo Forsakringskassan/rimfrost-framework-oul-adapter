@@ -22,6 +22,7 @@ import se.fk.rimfrost.framework.oul.model.ImmutableCreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.ImmutableErbjudande;
 import se.fk.rimfrost.framework.oul.model.ImmutableIdtyp;
 import se.fk.rimfrost.framework.oul.model.ImmutableOperativUppgift;
+import se.fk.rimfrost.framework.oul.model.ImmutableProcessInfo;
 import se.fk.rimfrost.framework.oul.model.OperativUppgift;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
@@ -171,6 +172,11 @@ public class OulAdapterTest
 
    private static CreateOperativUppgiftRequest createRequest()
    {
+      var processInfo = ImmutableProcessInfo.builder()
+            .replyTopic("test-topic")
+            .cloudeventAttributes(Map.of("source", "test-source", "type", "test-type"))
+            .build();
+
       return ImmutableCreateOperativUppgiftRequest.builder()
             .version("1.0")
             .handlaggningId(HANDLAGGNING_ID)
@@ -184,18 +190,23 @@ public class OulAdapterTest
             .roll("HANDLAGGARE")
             .url("test.com/uppgifter")
             .subTopic("test-subtopic")
-            .cloudeventAttributes(Map.of("source", "test-source", "type", "test-type"))
             .erbjudande(ImmutableErbjudande.builder().id("959b609d-7402-4ef4-ad74-8c6082c9846a").namn("VAH").build())
+            .processInfo(processInfo)
             .build();
    }
 
    private static OperativUppgift operativUppgift()
    {
+      var processInfo = ImmutableProcessInfo.builder()
+            .replyTopic("test-topic")
+            .cloudeventAttributes(Map.of("source", "test-source"))
+            .build();
+
       return ImmutableOperativUppgift.builder()
             .uppgiftId(UPPGIFT_ID)
             .handlaggningId(HANDLAGGNING_ID)
             .status("ACTIVE")
-            .cloudeventAttributes(Map.of("source", "test-source"))
+            .processInfo(processInfo)
             .build();
    }
 }
