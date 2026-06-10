@@ -12,7 +12,10 @@
         "uppgift_id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
         "handlaggning_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
         "status": "TILLDELAD",
-        "cloudevent_attributes": {"source": "test-source"}
+        "process_info": {
+          "cloudevent_attributes": {"source": "test-source"},
+          "reply_topic": "test-topic"
+        }
     },
     "transformers": ["response-template"]
   }

@@ -10,6 +10,8 @@ import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.ImmutableCreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.ImmutableErbjudande;
 import se.fk.rimfrost.framework.oul.model.ImmutableIdtyp;
+import se.fk.rimfrost.framework.oul.model.ImmutableProcessInfo;
+import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.ProcessInfo;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.UppgiftResponse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,10 +54,12 @@ class OulMapperTest
 
       assertNotNull(result.getIndivider());
       assertEquals(createOperativUppgiftRequest.getIndivider().size(), result.getIndivider().size());
-      assertEquals(createOperativUppgiftRequest.getIndivider().get(0).getTypId(), result.getIndivider().get(0).getTypId());
-      assertEquals(createOperativUppgiftRequest.getIndivider().get(0).getVarde(), result.getIndivider().get(0).getVarde());
+      assertEquals(createOperativUppgiftRequest.getIndivider().getFirst().getTypId(),
+            result.getIndivider().getFirst().getTypId());
+      assertEquals(createOperativUppgiftRequest.getIndivider().getFirst().getVarde(),
+            result.getIndivider().getFirst().getVarde());
 
-      assertEquals(Map.of("source", "test-source", "type", "test-type"), result.getCloudeventAttributes());
+      assertEquals(Map.of("source", "test-source", "type", "test-type"), result.getProcessInfo().getCloudeventAttributes());
    }
 
    @Test
@@ -91,14 +95,21 @@ class OulMapperTest
    @Test
    void toCreateUppgiftRequestLeavesCloudeventAttributesUnsetWhenEmpty()
    {
-      var createRequest = ImmutableCreateOperativUppgiftRequest.builder()
-            .from(createOperativUppgiftRequest())
+      var createRequest = createOperativUppgiftRequest();
+
+      var updatedProcessInfo = ImmutableProcessInfo.builder()
+            .from(createRequest.getProcessInfo())
             .cloudeventAttributes(Map.of())
             .build();
 
-      var result = mapper.toCreateUppgiftRequest(createRequest);
+      var updatedCreateRequest = ImmutableCreateOperativUppgiftRequest.builder()
+            .from(createRequest)
+            .processInfo(updatedProcessInfo)
+            .build();
 
-      assertNull(result.getCloudeventAttributes());
+      var result = mapper.toCreateUppgiftRequest(updatedCreateRequest);
+
+      assertNull(result.getProcessInfo().getCloudeventAttributes());
    }
 
    @Test
@@ -108,9 +119,30 @@ class OulMapperTest
 
       var result = mapper.toCreateUppgiftRequest(createRequest);
 
-      result.getCloudeventAttributes().put("extra", "value");
-      assertEquals(2, createRequest.getCloudeventAttributes().size(),
+      result.getProcessInfo().getCloudeventAttributes().put("extra", "value");
+      assertEquals(2, createRequest.getProcessInfo().getCloudeventAttributes().size(),
             "Mutating the mapped request must not affect the source domain object");
+   }
+
+   @Test
+   void toCreateUppgiftRequestSetsReplyTopic()
+   {
+      var createRequest = createOperativUppgiftRequest();
+
+      var updatedProcessInfo = ImmutableProcessInfo.builder()
+            .from(createRequest.getProcessInfo())
+            .replyTopic("a-test-topic")
+            .build();
+
+      var updatedCreateRequest = ImmutableCreateOperativUppgiftRequest.builder()
+            .from(createRequest)
+            .processInfo(updatedProcessInfo)
+            .build();
+
+      var result = mapper.toCreateUppgiftRequest(updatedCreateRequest);
+
+      assertEquals(updatedProcessInfo.getReplyTopic(), updatedCreateRequest.getProcessInfo().getReplyTopic(),
+            "Reply topic should be set when request is created");
    }
 
    @Test
@@ -125,11 +157,15 @@ class OulMapperTest
    @Test
    void toOperativUppgiftMapsAllFields()
    {
+      var processInfo = new ProcessInfo();
+      processInfo.setReplyTopic("test-topic");
+      processInfo.setCloudeventAttributes(new java.util.HashMap<>(Map.of("source", "test-source")));
+
       var response = new UppgiftResponse();
       response.setUppgiftId(UPPGIFT_ID);
       response.setHandlaggningId(HANDLAGGNING_ID);
       response.setStatus("TILLDELAD");
-      response.setCloudeventAttributes(new java.util.HashMap<>(Map.of("source", "test-source")));
+      response.setProcessInfo(processInfo);
 
       var result = mapper.toOperativUppgift(response);
 
@@ -137,26 +173,54 @@ class OulMapperTest
       assertEquals(UPPGIFT_ID, result.getUppgiftId());
       assertEquals(HANDLAGGNING_ID, result.getHandlaggningId());
       assertEquals("TILLDELAD", result.getStatus());
-      assertEquals(Map.of("source", "test-source"), result.getCloudeventAttributes());
+      assertEquals(Map.of("source", "test-source"), result.getProcessInfo().getCloudeventAttributes());
    }
 
    @Test
    void toOperativUppgiftHandlesNullCloudeventAttributes()
    {
+      var processInfo = new ProcessInfo();
+      processInfo.setReplyTopic("test-topic");
+      processInfo.setCloudeventAttributes(null);
+
       var response = new UppgiftResponse();
       response.setUppgiftId(UPPGIFT_ID);
       response.setHandlaggningId(HANDLAGGNING_ID);
       response.setStatus("AVSLUTAD");
-      response.setCloudeventAttributes(null);
+      response.setProcessInfo(processInfo);
 
       var result = mapper.toOperativUppgift(response);
 
       assertNotNull(result);
-      assertTrue(result.getCloudeventAttributes().isEmpty());
+      assertTrue(result.getProcessInfo().getCloudeventAttributes().isEmpty());
+   }
+
+   @Test
+   void toOperativUppgiftSetsReplyTopic()
+   {
+      var processInfo = new ProcessInfo();
+      processInfo.setReplyTopic("test-topic");
+      processInfo.setCloudeventAttributes(null);
+
+      var response = new UppgiftResponse();
+      response.setUppgiftId(UPPGIFT_ID);
+      response.setHandlaggningId(HANDLAGGNING_ID);
+      response.setStatus("AVSLUTAD");
+      response.setProcessInfo(processInfo);
+
+      var result = mapper.toOperativUppgift(response);
+
+      assertNotNull(result);
+      assertEquals(processInfo.getReplyTopic(), result.getProcessInfo().getReplyTopic());
    }
 
    private static CreateOperativUppgiftRequest createOperativUppgiftRequest()
    {
+      var processInfo = ImmutableProcessInfo.builder()
+            .replyTopic("test-topic")
+            .cloudeventAttributes(Map.of("source", "test-source", "type", "test-type"))
+            .build();
+
       return ImmutableCreateOperativUppgiftRequest.builder()
             .version("1.0")
             .handlaggningId(HANDLAGGNING_ID)
@@ -170,8 +234,8 @@ class OulMapperTest
             .roll("HANDLAGGARE")
             .url("test.com/uppgifter")
             .subTopic("test-subtopic")
-            .cloudeventAttributes(Map.of("source", "test-source", "type", "test-type"))
             .erbjudande(ImmutableErbjudande.builder().id("959b609d-7402-4ef4-ad74-8c6082c9846a").namn("VAH").build())
+            .processInfo(processInfo)
             .build();
    }
 }

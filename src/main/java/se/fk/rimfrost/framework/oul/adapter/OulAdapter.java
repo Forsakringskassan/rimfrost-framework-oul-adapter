@@ -3,7 +3,7 @@ package se.fk.rimfrost.framework.oul.adapter;
 import se.fk.rimfrost.framework.oul.exception.OulException;
 import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.OperativUppgift;
-import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.DefaultApi;
+import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.ReglerApi;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -26,7 +26,7 @@ public class OulAdapter
    @ConfigProperty(name = "oul.api.base-url")
    String oulBaseUrl;
 
-   private DefaultApi oulClient;
+   private ReglerApi oulClient;
 
    @Inject
    OulMapper oulMapper;
@@ -38,7 +38,7 @@ public class OulAdapter
       clientConfig.connectorProvider(new ApacheConnectorProvider());
       Client client = ClientBuilder.newClient(clientConfig);
       this.oulClient = WebResourceFactory.newResource(
-            DefaultApi.class,
+            ReglerApi.class,
             client.target(this.oulBaseUrl));
    }
 
