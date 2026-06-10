@@ -2,6 +2,23 @@
 
 Changelog of rimfrost-framework-oul-adapter.
 
+## 1.1.1 (2026-06-10)
+
+### Bug Fixes
+
+-  Bump rimfrost-service-oul-management-regler-openapi version ([4276a](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/4276a3976bbe16c) Lars Persson)  
+-  Use rimfrost-service-oul-management-regler-openapi ([3e95c](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/3e95c0159cd33be) Lars Persson)  
+
+## rimfrost-1.1 (2026-05-29)
+
+### Bug Fixes
+
+-  **deps**  update dependency org.immutables:value to v2.12.2 ([75f30](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/75f3014d223fc1b) renovate[bot])  
+
+### Dependency updates
+
+- update dependency org.immutables:value-processor to v2.12.2 ([4e629](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/4e62900d7619c2f) renovate[bot])  
+- update dependency org.apache.maven.plugins:maven-compiler-plugin to v3.15.0 ([08ee7](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/08ee7fd9c4caf8f) renovate[bot])  
 ## 0.0.2 (2026-05-21)
 
 ### Bug Fixes
