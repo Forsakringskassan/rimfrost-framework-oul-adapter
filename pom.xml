@@ -30,7 +30,7 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-arc</artifactId>
-      <version>3.20.3</version>
+      <version>3.37.0</version>
     </dependency>
     <dependency>
       <groupId>se.fk.rimfrost.oul.management.regler</groupId>
