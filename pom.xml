@@ -60,7 +60,7 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5-component</artifactId>
-      <version>3.20.3</version>
+      <version>3.37.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
