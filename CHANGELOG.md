@@ -2,6 +2,13 @@
 
 Changelog of rimfrost-framework-oul-adapter.
 
+## 1.1.2 (2026-06-24)
+
+### Bug Fixes
+
+-  Close client instance ([012a2](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/012a2c6b8b202e8) Lars Persson)  
+-  **deps**  update jersey monorepo to v3.1.12 ([f7758](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/f775874b730e4a9) renovate[bot])  
+
 ## 1.1.1 (2026-06-10)
 
 ### Bug Fixes
