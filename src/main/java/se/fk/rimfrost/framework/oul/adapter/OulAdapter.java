@@ -1,5 +1,6 @@
 package se.fk.rimfrost.framework.oul.adapter;
 
+import jakarta.annotation.PreDestroy;
 import se.fk.rimfrost.framework.oul.exception.OulException;
 import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.OperativUppgift;
@@ -14,7 +15,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
+import org.glassfish.jersey.apache5.connector.Apache5ConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import java.util.UUID;
@@ -28,6 +29,8 @@ public class OulAdapter
 
    private ReglerApi oulClient;
 
+   Client client;
+
    @Inject
    OulMapper oulMapper;
 
@@ -35,11 +38,23 @@ public class OulAdapter
    void init()
    {
       ClientConfig clientConfig = new ClientConfig();
-      clientConfig.connectorProvider(new ApacheConnectorProvider());
-      Client client = ClientBuilder.newClient(clientConfig);
+      clientConfig.connectorProvider(new Apache5ConnectorProvider());
+      this.client = ClientBuilder.newClient(clientConfig);
       this.oulClient = WebResourceFactory.newResource(
             ReglerApi.class,
             client.target(this.oulBaseUrl));
+   }
+
+   @PreDestroy
+   void destroy()
+   {
+      this.oulClient = null;
+
+      if (this.client != null)
+      {
+         this.client.close();
+         this.client = null;
+      }
    }
 
    public OperativUppgift createOperativUppgift(CreateOperativUppgiftRequest createRequest) throws OulException
