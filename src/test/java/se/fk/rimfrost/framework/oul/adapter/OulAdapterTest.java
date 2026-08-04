@@ -1,6 +1,5 @@
 package se.fk.rimfrost.framework.oul.adapter;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterAll;
@@ -8,11 +7,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.http.Fault;
-
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.component.QuarkusComponentTest;
 import jakarta.inject.Inject;
@@ -20,11 +17,9 @@ import se.fk.rimfrost.framework.oul.exception.OulException;
 import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.ImmutableCreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.ImmutableErbjudande;
-import se.fk.rimfrost.framework.oul.model.ImmutableIdtyp;
 import se.fk.rimfrost.framework.oul.model.ImmutableOperativUppgift;
 import se.fk.rimfrost.framework.oul.model.ImmutableProcessInfo;
 import se.fk.rimfrost.framework.oul.model.OperativUppgift;
-
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -180,10 +175,6 @@ public class OulAdapterTest
       return ImmutableCreateOperativUppgiftRequest.builder()
             .version("1.0")
             .handlaggningId(HANDLAGGNING_ID)
-            .individer(List.of(ImmutableIdtyp.builder()
-                  .typId("PERSONNUMMER")
-                  .varde("197001011234")
-                  .build()))
             .regel("TEST_REGEL")
             .beskrivning("Testbeskrivning")
             .verksamhetslogik("TEST_VERKSAMHETSLOGIK")

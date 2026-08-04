@@ -1,19 +1,15 @@
 package se.fk.rimfrost.framework.oul.adapter;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.ImmutableCreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.ImmutableErbjudande;
-import se.fk.rimfrost.framework.oul.model.ImmutableIdtyp;
 import se.fk.rimfrost.framework.oul.model.ImmutableProcessInfo;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.ProcessInfo;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.UppgiftResponse;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -52,44 +48,7 @@ class OulMapperTest
       assertEquals(createOperativUppgiftRequest.getErbjudande().getId(), result.getErbjudande().getId());
       assertEquals(createOperativUppgiftRequest.getErbjudande().getNamn(), result.getErbjudande().getNamn());
 
-      assertNotNull(result.getIndivider());
-      assertEquals(createOperativUppgiftRequest.getIndivider().size(), result.getIndivider().size());
-      assertEquals(createOperativUppgiftRequest.getIndivider().getFirst().getTypId(),
-            result.getIndivider().getFirst().getTypId());
-      assertEquals(createOperativUppgiftRequest.getIndivider().getFirst().getVarde(),
-            result.getIndivider().getFirst().getVarde());
-
       assertEquals(Map.of("source", "test-source", "type", "test-type"), result.getProcessInfo().getCloudeventAttributes());
-   }
-
-   @Test
-   void toCreateUppgiftRequestMapsMultipleIndivider()
-   {
-      var createRequest = ImmutableCreateOperativUppgiftRequest.builder()
-            .from(createOperativUppgiftRequest())
-            .individer(List.of(
-                  ImmutableIdtyp.builder().typId("PERSONNUMMER").varde("197001011234").build(),
-                  ImmutableIdtyp.builder().typId("SAMORDNINGSNUMMER").varde("197001611234").build()))
-            .build();
-
-      var result = mapper.toCreateUppgiftRequest(createRequest);
-
-      assertEquals(2, result.getIndivider().size());
-      assertEquals("SAMORDNINGSNUMMER", result.getIndivider().get(1).getTypId());
-      assertEquals("197001611234", result.getIndivider().get(1).getVarde());
-   }
-
-   @Test
-   void toCreateUppgiftRequestLeavesIndividerUnsetWhenEmpty()
-   {
-      var createRequest = ImmutableCreateOperativUppgiftRequest.builder()
-            .from(createOperativUppgiftRequest())
-            .individer(List.of())
-            .build();
-
-      var result = mapper.toCreateUppgiftRequest(createRequest);
-
-      assertNull(result.getIndivider());
    }
 
    @Test
@@ -224,10 +183,6 @@ class OulMapperTest
       return ImmutableCreateOperativUppgiftRequest.builder()
             .version("1.0")
             .handlaggningId(HANDLAGGNING_ID)
-            .individer(List.of(ImmutableIdtyp.builder()
-                  .typId("PERSONNUMMER")
-                  .varde("197001011234")
-                  .build()))
             .regel("TEST_REGEL")
             .beskrivning("Testbeskrivning")
             .verksamhetslogik("TEST_VERKSAMHETSLOGIK")
