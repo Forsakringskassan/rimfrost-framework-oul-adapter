@@ -2,6 +2,12 @@
 
 Changelog of rimfrost-framework-oul-adapter.
 
+## 1.1.4 (2026-08-11)
+
+### Bug Fixes
+
+-  add support for unassignOperativUppgift ([a189c](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/a189ca930c97b4c) Ulf Slunga)  
+
 ## 1.1.3 (2026-08-11)
 
 ### Bug Fixes
