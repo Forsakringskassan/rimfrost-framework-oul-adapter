@@ -3,7 +3,6 @@ package se.fk.rimfrost.framework.oul.adapter;
 import jakarta.enterprise.context.ApplicationScoped;
 import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.Erbjudande;
-import se.fk.rimfrost.framework.oul.model.Idtyp;
 import se.fk.rimfrost.framework.oul.model.ImmutableOperativUppgift;
 import se.fk.rimfrost.framework.oul.model.ImmutableProcessInfo;
 import se.fk.rimfrost.framework.oul.model.OperativUppgift;
@@ -11,7 +10,6 @@ import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsourc
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.EndUppgiftRequest;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.ProcessInfo;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.UppgiftResponse;
-
 import java.util.HashMap;
 
 @ApplicationScoped
@@ -40,13 +38,6 @@ public class OulMapper
       request.setErbjudande(toGeneratedErbjudande(createRequest.getErbjudande()));
       request.setProcessInfo(processInfo);
 
-      if (!createRequest.getIndivider().isEmpty())
-      {
-         request.setIndivider(createRequest.getIndivider().stream()
-               .map(this::toGeneratedIdtyp)
-               .toList());
-      }
-
       return request;
    }
 
@@ -72,14 +63,6 @@ public class OulMapper
             .handlaggningId(response.getHandlaggningId())
             .status(response.getStatus())
             .processInfo(processInfoBuilder.build()).build();
-   }
-
-   private se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.Idtyp toGeneratedIdtyp(Idtyp idtyp)
-   {
-      var generated = new se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.Idtyp();
-      generated.setTypId(idtyp.getTypId());
-      generated.setVarde(idtyp.getVarde());
-      return generated;
    }
 
    private se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.Erbjudande toGeneratedErbjudande(
