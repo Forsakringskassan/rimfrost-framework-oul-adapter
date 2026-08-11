@@ -2,6 +2,15 @@
 
 Changelog of rimfrost-framework-oul-adapter.
 
+## 1.1.3 (2026-08-11)
+
+### Bug Fixes
+
+-  remove unused Idtyp model class ([3d7df](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/3d7df5b1e687a79) Ulf Slunga)  
+-  bumping api ([3e277](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/3e277d2018cc051) Ulf Slunga)  
+-  remove individer from CreateOperativUppgiftRequest ([f62ec](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/f62ec5960fe2674) Ulf Slunga)  
+-  **deps**  update dependency io.quarkus:quarkus-bom to v3.37.3 ([8ad21](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/8ad21492f3ab3e0) renovate[bot])  
+
 ## 1.1.2 (2026-06-24)
 
 ### Bug Fixes
