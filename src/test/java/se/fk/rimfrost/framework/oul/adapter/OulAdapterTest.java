@@ -163,6 +163,50 @@ public class OulAdapterTest
       assertEquals(expected, result);
    }
 
+   // unassignOperativUppgift tests
+
+   @Test
+   void unassignUppgiftThrowsNotFound()
+   {
+      server.stubFor(WireMock.post(WireMock.urlPathMatching("/uppgifter/[^/]+/unassign"))
+            .willReturn(WireMock.aResponse().withStatus(404)));
+
+      var exception = assertThrows(OulException.class, () -> oulAdapter.unassignOperativUppgift(UPPGIFT_ID));
+      assertEquals(OulException.ErrorType.NOT_FOUND, exception.getErrorType());
+   }
+
+   @Test
+   void unassignUppgiftThrowsServiceUnavailable()
+   {
+      server.stubFor(WireMock.post(WireMock.urlPathMatching("/uppgifter/[^/]+/unassign"))
+            .willReturn(WireMock.aResponse().withFault(Fault.CONNECTION_RESET_BY_PEER)));
+
+      var exception = assertThrows(OulException.class, () -> oulAdapter.unassignOperativUppgift(UPPGIFT_ID));
+      assertEquals(OulException.ErrorType.SERVICE_UNAVAILABLE, exception.getErrorType());
+   }
+
+   @Test
+   void unassignUppgiftThrowsUnexpectedError()
+   {
+      server.stubFor(WireMock.post(WireMock.urlPathMatching("/uppgifter/[^/]+/unassign"))
+            .willReturn(WireMock.aResponse().withStatus(500)));
+
+      var exception = assertThrows(OulException.class, () -> oulAdapter.unassignOperativUppgift(UPPGIFT_ID));
+      assertEquals(OulException.ErrorType.UNEXPECTED_ERROR, exception.getErrorType());
+   }
+
+   @Test
+   void unassignUppgiftReturnsOperativUppgift() throws OulException
+   {
+      var expected = operativUppgift();
+      Mockito.when(oulMapper.toOperativUppgift(any())).thenReturn(expected);
+
+      var result = oulAdapter.unassignOperativUppgift(UPPGIFT_ID);
+
+      assertNotNull(result);
+      assertEquals(expected, result);
+   }
+
    // helpers
 
    private static CreateOperativUppgiftRequest createRequest()

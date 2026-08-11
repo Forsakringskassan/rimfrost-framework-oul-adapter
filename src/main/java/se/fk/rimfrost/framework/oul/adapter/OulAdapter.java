@@ -88,6 +88,37 @@ public class OulAdapter
       }
    }
 
+   public OperativUppgift unassignOperativUppgift(UUID uppgiftId) throws OulException
+   {
+      try
+      {
+         var response = oulClient.unassignUppgift(uppgiftId);
+         if (response == null)
+         {
+            throw new OulException(OulException.ErrorType.UNEXPECTED_ERROR,
+                  "Oväntat fel vid avtilldelning av operativ uppgift, response är null för uppgiftId: " + uppgiftId);
+         }
+         return oulMapper.toOperativUppgift(response);
+      }
+      catch (NotFoundException e)
+      {
+         throw new OulException(OulException.ErrorType.NOT_FOUND,
+               "Ingen operativ uppgift hittades med id: " + uppgiftId, e);
+      }
+      catch (ProcessingException e)
+      {
+         throw new OulException(OulException.ErrorType.SERVICE_UNAVAILABLE,
+               "Kunde inte nå oul service vid avtilldelning av operativ uppgift med id: " + uppgiftId, e);
+      }
+      catch (WebApplicationException e)
+      {
+         throw new OulException(OulException.ErrorType.UNEXPECTED_ERROR,
+               "Oväntat fel vid avtilldelning av operativ uppgift med id: " + uppgiftId + ", status: "
+                     + e.getResponse().getStatus(),
+               e);
+      }
+   }
+
    public OperativUppgift endOperativUppgift(UUID uppgiftId, String reason) throws OulException
    {
       try
