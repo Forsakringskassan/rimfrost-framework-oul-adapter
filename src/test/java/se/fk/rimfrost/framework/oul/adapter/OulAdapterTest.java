@@ -196,15 +196,12 @@ public class OulAdapterTest
    }
 
    @Test
-   void unassignUppgiftReturnsOperativUppgift() throws OulException
+   void unassignUppgiftSucceeds() throws OulException
    {
-      var expected = operativUppgift();
-      Mockito.when(oulMapper.toOperativUppgift(any())).thenReturn(expected);
+      server.stubFor(WireMock.post(WireMock.urlPathMatching("/uppgifter/[^/]+/unassign"))
+            .willReturn(WireMock.aResponse().withStatus(200)));
 
-      var result = oulAdapter.unassignOperativUppgift(UPPGIFT_ID);
-
-      assertNotNull(result);
-      assertEquals(expected, result);
+      oulAdapter.unassignOperativUppgift(UPPGIFT_ID);
    }
 
    // helpers
