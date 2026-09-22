@@ -2,6 +2,27 @@
 
 Changelog of rimfrost-framework-oul-adapter.
 
+## 1.1.5 (2026-09-22)
+
+### Bug Fixes
+
+-  migrate unassignOperativUppgift to management API client ([6d1ce](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/6d1ceed31e561e5) Ulf Slunga)  
+-  **deps**  update dependency io.quarkus:quarkus-bom to v3.39.2 ([c9f27](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/c9f27152fa6ba4c) renovate[bot])  
+-  **deps**  update dependency io.quarkus:quarkus-bom to v3.38.2 ([eb491](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/eb49172c9698886) renovate[bot])  
+
+### Dependency updates
+
+- update dependency org.apache.maven.plugins:maven-compiler-plugin to v3.16.0 ([d16dc](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/d16dc2604d2bf15) renovate[bot])  
+- pin forsakringskassan/.github action to d1349e6 ([43e3f](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/43e3f86cbba637d) renovate[bot])  
+### Other changes
+
+**Update pom.xml**
+
+* Co-authored-by: larpersso &lt;254442132+larpersso@users.noreply.github.com&gt; 
+
+[73250](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/732504e1fa2c612) Ulf Slunga *2026-09-22 08:48:07*
+
+
 ## 1.1.4 (2026-08-11)
 
 ### Bug Fixes
