@@ -4,6 +4,7 @@ import jakarta.annotation.PreDestroy;
 import se.fk.rimfrost.framework.oul.exception.OulException;
 import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.OperativUppgift;
+import se.fk.rimfrost.oul.management.jaxrsspec.controllers.generatedsource.UppgifterApi;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.ReglerApi;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -29,6 +30,8 @@ public class OulAdapter
 
    private ReglerApi oulClient;
 
+   private UppgifterApi managementClient;
+
    Client client;
 
    @Inject
@@ -43,12 +46,16 @@ public class OulAdapter
       this.oulClient = WebResourceFactory.newResource(
             ReglerApi.class,
             client.target(this.oulBaseUrl));
+      this.managementClient = WebResourceFactory.newResource(
+            UppgifterApi.class,
+            client.target(this.oulBaseUrl));
    }
 
    @PreDestroy
    void destroy()
    {
       this.oulClient = null;
+      this.managementClient = null;
 
       if (this.client != null)
       {
@@ -88,17 +95,18 @@ public class OulAdapter
       }
    }
 
-   public OperativUppgift unassignOperativUppgift(UUID uppgiftId) throws OulException
+   /**
+    * Removes the assignee from an OUL uppgift, putting it back in the queue.
+    * Uses the management API since the regler spec does not expose this operation.
+    *
+    * @param uppgiftId the uppgift to unassign
+    * @throws OulException if the uppgift is not found, the service is unreachable, or an unexpected error occurs
+    */
+   public void unassignOperativUppgift(UUID uppgiftId) throws OulException
    {
       try
       {
-         var response = oulClient.unassignUppgift(uppgiftId);
-         if (response == null)
-         {
-            throw new OulException(OulException.ErrorType.UNEXPECTED_ERROR,
-                  "Oväntat fel vid avtilldelning av operativ uppgift, response är null för uppgiftId: " + uppgiftId);
-         }
-         return oulMapper.toOperativUppgift(response);
+         managementClient.unassignUppgift(uppgiftId);
       }
       catch (NotFoundException e)
       {
