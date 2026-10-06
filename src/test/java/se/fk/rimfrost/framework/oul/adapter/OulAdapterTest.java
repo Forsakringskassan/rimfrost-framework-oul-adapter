@@ -224,6 +224,7 @@ public class OulAdapterTest
             .subTopic("test-subtopic")
             .erbjudande(ImmutableErbjudande.builder().id("959b609d-7402-4ef4-ad74-8c6082c9846a").namn("VAH").build())
             .processInfo(processInfo)
+            .assignable(true)
             .build();
    }
 
