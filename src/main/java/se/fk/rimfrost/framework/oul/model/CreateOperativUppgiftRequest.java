@@ -32,4 +32,6 @@ public interface CreateOperativUppgiftRequest
 
    @Nullable
    String getProcessvyUrl();
+
+   boolean getAssignable();
 }

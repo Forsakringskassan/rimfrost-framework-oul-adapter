@@ -39,6 +39,7 @@ public class OulMapper
       request.setSubTopic(createRequest.getSubTopic());
       request.setErbjudande(toGeneratedErbjudande(createRequest.getErbjudande()));
       request.setProcessInfo(processInfo);
+      request.setAssignable(createRequest.getAssignable());
 
       return request;
    }
