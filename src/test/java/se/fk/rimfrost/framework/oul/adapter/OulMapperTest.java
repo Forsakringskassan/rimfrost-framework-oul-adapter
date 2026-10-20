@@ -47,6 +47,7 @@ class OulMapperTest
       assertEquals(createOperativUppgiftRequest.getSubTopic(), result.getSubTopic());
       assertEquals(createOperativUppgiftRequest.getErbjudande().getId(), result.getErbjudande().getId());
       assertEquals(createOperativUppgiftRequest.getErbjudande().getNamn(), result.getErbjudande().getNamn());
+      assertEquals(createOperativUppgiftRequest.getAssignable(), result.getAssignable());
 
       assertEquals(Map.of("source", "test-source", "type", "test-type"), result.getProcessInfo().getCloudeventAttributes());
    }
@@ -191,6 +192,7 @@ class OulMapperTest
             .subTopic("test-subtopic")
             .erbjudande(ImmutableErbjudande.builder().id("959b609d-7402-4ef4-ad74-8c6082c9846a").namn("VAH").build())
             .processInfo(processInfo)
+            .assignable(true)
             .build();
    }
 }

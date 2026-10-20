@@ -25,4 +25,6 @@ public interface CreateOperativUppgiftRequest
    Erbjudande getErbjudande();
 
    ProcessInfo getProcessInfo();
+
+   boolean getAssignable();
 }
