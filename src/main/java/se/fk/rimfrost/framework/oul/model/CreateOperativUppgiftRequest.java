@@ -1,5 +1,6 @@
 package se.fk.rimfrost.framework.oul.model;
 
+import jakarta.annotation.Nullable;
 import org.immutables.value.Value;
 import java.util.UUID;
 
@@ -25,4 +26,10 @@ public interface CreateOperativUppgiftRequest
    Erbjudande getErbjudande();
 
    ProcessInfo getProcessInfo();
+
+   @Nullable
+   UUID getAktivitetId();
+
+   @Nullable
+   String getProcessvyUrl();
 }

@@ -6,9 +6,9 @@ import se.fk.rimfrost.framework.oul.model.Erbjudande;
 import se.fk.rimfrost.framework.oul.model.ImmutableOperativUppgift;
 import se.fk.rimfrost.framework.oul.model.ImmutableProcessInfo;
 import se.fk.rimfrost.framework.oul.model.OperativUppgift;
+import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.CreateUppgiftProcessInfo;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.CreateUppgiftRequest;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.EndUppgiftRequest;
-import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.ProcessInfo;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.model.UppgiftResponse;
 import java.util.HashMap;
 
@@ -18,8 +18,10 @@ public class OulMapper
 
    public CreateUppgiftRequest toCreateUppgiftRequest(CreateOperativUppgiftRequest createRequest)
    {
-      var processInfo = new ProcessInfo();
+      var processInfo = new CreateUppgiftProcessInfo();
       processInfo.setReplyTopic(createRequest.getProcessInfo().getReplyTopic());
+      processInfo.setAktivitetId(createRequest.getAktivitetId());
+      processInfo.setProcessvyUrl(createRequest.getProcessvyUrl());
 
       if (!createRequest.getProcessInfo().getCloudeventAttributes().isEmpty())
       {
