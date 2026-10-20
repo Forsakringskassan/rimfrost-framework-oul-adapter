@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.ImmutableCreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.ImmutableErbjudande;
@@ -65,6 +66,10 @@ class OulMapperTest
 
       assertEquals(AKTIVITET_ID, result.getProcessInfo().getAktivitetId());
       assertEquals("/process/vah", result.getProcessInfo().getProcessvyUrl());
+
+      var json = new ObjectMapper().valueToTree(result).get("process_info");
+      assertEquals(AKTIVITET_ID.toString(), json.get("aktivitet_id").asText());
+      assertEquals("/process/vah", json.get("processvy_url").asText());
    }
 
    @Test
