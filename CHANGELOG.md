@@ -2,6 +2,27 @@
 
 Changelog of rimfrost-framework-oul-adapter.
 
+## 1.2.0 (2026-10-28)
+
+### Features
+
+-  send optional aktivitetId and processvyUrl in process_info when creating uppgift (FKPOC-1159) ([a13d4](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/a13d469bf33b456) LisaWedin_Ductus)  
+
+### Bug Fixes
+
+-  Add assignable flag to CreateOperativeUppgiftRequest ([1270b](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/1270b88ce9e2968) Lars Persson)  
+-  Replace github workflows ([75eae](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/75eae553f2169ef) Lars Persson)  
+-  Bump rimfrost-service-oul-management-regler-api-jaxrs-spec version ([e9816](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/e9816f86d3c0e2a) Lars Persson)  
+-  **deps**  update dependency org.immutables:bom to v2.12.3 ([b8aae](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/b8aae81d0131a71) renovate[bot])  
+-  **deps**  update dependency io.quarkus:quarkus-bom to v3.40.1 ([f7355](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/f7355ba8f099dea) renovate[bot])  
+
+### Dependency updates
+
+- update forsakringskassan/.github digest to cbd74f1 ([33917](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/3391778a449982b) renovate[bot])  
+- update forsakringskassan/.github digest to bfb01f7 ([299b2](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/299b2d7c0d31d0e) renovate[bot])  
+### Other changes
+
+
 ## 1.1.5 (2026-09-22)
 
 ### Bug Fixes
