@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.ImmutableCreateOperativUppgiftRequest;
 import se.fk.rimfrost.framework.oul.model.ImmutableErbjudande;
@@ -20,6 +21,7 @@ class OulMapperTest
 
    private static final UUID HANDLAGGNING_ID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
    private static final UUID UPPGIFT_ID = UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f12345678901");
+   private static final UUID AKTIVITET_ID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-123456789012");
 
    OulMapper mapper;
 
@@ -49,6 +51,35 @@ class OulMapperTest
       assertEquals(createOperativUppgiftRequest.getErbjudande().getNamn(), result.getErbjudande().getNamn());
 
       assertEquals(Map.of("source", "test-source", "type", "test-type"), result.getProcessInfo().getCloudeventAttributes());
+   }
+
+   @Test
+   void toCreateUppgiftRequestMapsAktivitetIdAndProcessvyUrl()
+   {
+      var createRequest = ImmutableCreateOperativUppgiftRequest.builder()
+            .from(createOperativUppgiftRequest())
+            .aktivitetId(AKTIVITET_ID)
+            .processvyUrl("/process/vah")
+            .build();
+
+      var result = mapper.toCreateUppgiftRequest(createRequest);
+
+      assertEquals(AKTIVITET_ID, result.getProcessInfo().getAktivitetId());
+      assertEquals("/process/vah", result.getProcessInfo().getProcessvyUrl());
+
+      var json = new ObjectMapper().valueToTree(result).get("process_info");
+      assertEquals(AKTIVITET_ID.toString(), json.get("aktivitet_id").asText());
+      assertEquals("/process/vah", json.get("processvy_url").asText());
+   }
+
+   @Test
+   void toCreateUppgiftRequestLeavesAktivitetIdAndProcessvyUrlUnsetWhenMissing()
+   {
+      var result = mapper.toCreateUppgiftRequest(createOperativUppgiftRequest());
+
+      assertNull(result.getProcessInfo().getAktivitetId());
+      assertNull(result.getProcessInfo().getProcessvyUrl());
+      assertEquals("test-topic", result.getProcessInfo().getReplyTopic());
    }
 
    @Test
