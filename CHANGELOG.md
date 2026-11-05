@@ -2,6 +2,13 @@
 
 Changelog of rimfrost-framework-oul-adapter.
 
+## 1.2.1 (2026-11-05)
+
+### Bug Fixes
+
+-  Remove replyTopic that has been removed from openapi ([a681a](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/a681a5ef22d2284) Lars Persson)  
+-  **deps**  update dependency io.quarkus:quarkus-bom to v3.40.1.1 ([5e9e0](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/5e9e053374d10db) renovate[bot])  
+
 ## 1.2.0 (2026-10-28)
 
 ### Features
