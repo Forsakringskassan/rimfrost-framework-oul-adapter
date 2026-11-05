@@ -80,7 +80,6 @@ class OulMapperTest
 
       assertNull(result.getProcessInfo().getAktivitetId());
       assertNull(result.getProcessInfo().getProcessvyUrl());
-      assertEquals("test-topic", result.getProcessInfo().getReplyTopic());
    }
 
    @Test
@@ -116,27 +115,6 @@ class OulMapperTest
    }
 
    @Test
-   void toCreateUppgiftRequestSetsReplyTopic()
-   {
-      var createRequest = createOperativUppgiftRequest();
-
-      var updatedProcessInfo = ImmutableProcessInfo.builder()
-            .from(createRequest.getProcessInfo())
-            .replyTopic("a-test-topic")
-            .build();
-
-      var updatedCreateRequest = ImmutableCreateOperativUppgiftRequest.builder()
-            .from(createRequest)
-            .processInfo(updatedProcessInfo)
-            .build();
-
-      var result = mapper.toCreateUppgiftRequest(updatedCreateRequest);
-
-      assertEquals(updatedProcessInfo.getReplyTopic(), updatedCreateRequest.getProcessInfo().getReplyTopic(),
-            "Reply topic should be set when request is created");
-   }
-
-   @Test
    void toEndUppgiftRequestSetsReason()
    {
       var result = mapper.toEndUppgiftRequest("uppgift-avslutad");
@@ -149,7 +127,6 @@ class OulMapperTest
    void toOperativUppgiftMapsAllFields()
    {
       var processInfo = new ProcessInfo();
-      processInfo.setReplyTopic("test-topic");
       processInfo.setCloudeventAttributes(new java.util.HashMap<>(Map.of("source", "test-source")));
 
       var response = new UppgiftResponse();
@@ -171,7 +148,6 @@ class OulMapperTest
    void toOperativUppgiftHandlesNullCloudeventAttributes()
    {
       var processInfo = new ProcessInfo();
-      processInfo.setReplyTopic("test-topic");
       processInfo.setCloudeventAttributes(null);
 
       var response = new UppgiftResponse();
@@ -186,29 +162,9 @@ class OulMapperTest
       assertTrue(result.getProcessInfo().getCloudeventAttributes().isEmpty());
    }
 
-   @Test
-   void toOperativUppgiftSetsReplyTopic()
-   {
-      var processInfo = new ProcessInfo();
-      processInfo.setReplyTopic("test-topic");
-      processInfo.setCloudeventAttributes(null);
-
-      var response = new UppgiftResponse();
-      response.setUppgiftId(UPPGIFT_ID);
-      response.setHandlaggningId(HANDLAGGNING_ID);
-      response.setStatus("AVSLUTAD");
-      response.setProcessInfo(processInfo);
-
-      var result = mapper.toOperativUppgift(response);
-
-      assertNotNull(result);
-      assertEquals(processInfo.getReplyTopic(), result.getProcessInfo().getReplyTopic());
-   }
-
    private static CreateOperativUppgiftRequest createOperativUppgiftRequest()
    {
       var processInfo = ImmutableProcessInfo.builder()
-            .replyTopic("test-topic")
             .cloudeventAttributes(Map.of("source", "test-source", "type", "test-type"))
             .build();
 

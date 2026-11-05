@@ -19,7 +19,6 @@ public class OulMapper
    public CreateUppgiftRequest toCreateUppgiftRequest(CreateOperativUppgiftRequest createRequest)
    {
       var processInfo = new CreateUppgiftProcessInfo();
-      processInfo.setReplyTopic(createRequest.getProcessInfo().getReplyTopic());
       processInfo.setAktivitetId(createRequest.getAktivitetId());
       processInfo.setProcessvyUrl(createRequest.getProcessvyUrl());
 
@@ -53,8 +52,7 @@ public class OulMapper
 
    public OperativUppgift toOperativUppgift(UppgiftResponse response)
    {
-      var processInfoBuilder = ImmutableProcessInfo.builder()
-            .replyTopic(response.getProcessInfo().getReplyTopic());
+      var processInfoBuilder = ImmutableProcessInfo.builder();
 
       if (response.getProcessInfo().getCloudeventAttributes() != null)
       {

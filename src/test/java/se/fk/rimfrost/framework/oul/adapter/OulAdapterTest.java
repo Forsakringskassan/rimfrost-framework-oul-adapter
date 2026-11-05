@@ -209,7 +209,6 @@ public class OulAdapterTest
    private static CreateOperativUppgiftRequest createRequest()
    {
       var processInfo = ImmutableProcessInfo.builder()
-            .replyTopic("test-topic")
             .cloudeventAttributes(Map.of("source", "test-source", "type", "test-type"))
             .build();
 
@@ -231,7 +230,6 @@ public class OulAdapterTest
    private static OperativUppgift operativUppgift()
    {
       var processInfo = ImmutableProcessInfo.builder()
-            .replyTopic("test-topic")
             .cloudeventAttributes(Map.of("source", "test-source"))
             .build();
 
