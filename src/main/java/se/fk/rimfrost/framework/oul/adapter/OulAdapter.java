@@ -9,15 +9,13 @@ import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsourc
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.BadRequestException;
-import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.glassfish.jersey.apache5.connector.Apache5ConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import java.util.UUID;
 
@@ -42,7 +40,8 @@ public class OulAdapter
    {
       ClientConfig clientConfig = new ClientConfig();
       clientConfig.connectorProvider(new Apache5ConnectorProvider());
-      this.client = ClientBuilder.newClient(clientConfig);
+      clientConfig.register(AdapterObjectMapperProvider.class);
+      this.client = JerseyClientBuilder.newClient(clientConfig);
       this.oulClient = WebResourceFactory.newResource(
             ReglerApi.class,
             client.target(this.oulBaseUrl));
@@ -78,11 +77,6 @@ public class OulAdapter
 
          return oulMapper.toOperativUppgift(createUppgiftResponse);
       }
-      catch (BadRequestException e)
-      {
-         throw new OulException(OulException.ErrorType.BAD_REQUEST,
-               "Felaktig förfrågan vid skapande av operativ uppgift", e);
-      }
       catch (ProcessingException e)
       {
          throw new OulException(OulException.ErrorType.SERVICE_UNAVAILABLE,
@@ -90,6 +84,12 @@ public class OulAdapter
       }
       catch (WebApplicationException e)
       {
+         if (e.getResponse().getStatus() == 400)
+         {
+            throw new OulException(OulException.ErrorType.BAD_REQUEST,
+                  "Felaktig förfrågan vid skapande av operativ uppgift", e);
+         }
+
          throw new OulException(OulException.ErrorType.UNEXPECTED_ERROR,
                "Oväntat fel vid skapande av operativ uppgift, status: " + e.getResponse().getStatus(), e);
       }
@@ -108,11 +108,6 @@ public class OulAdapter
       {
          managementClient.unassignUppgift(uppgiftId);
       }
-      catch (NotFoundException e)
-      {
-         throw new OulException(OulException.ErrorType.NOT_FOUND,
-               "Ingen operativ uppgift hittades med id: " + uppgiftId, e);
-      }
       catch (ProcessingException e)
       {
          throw new OulException(OulException.ErrorType.SERVICE_UNAVAILABLE,
@@ -120,6 +115,12 @@ public class OulAdapter
       }
       catch (WebApplicationException e)
       {
+         if (e.getResponse().getStatus() == 404)
+         {
+            throw new OulException(OulException.ErrorType.NOT_FOUND,
+                  "Ingen operativ uppgift hittades med id: " + uppgiftId, e);
+         }
+
          throw new OulException(OulException.ErrorType.UNEXPECTED_ERROR,
                "Oväntat fel vid avtilldelning av operativ uppgift med id: " + uppgiftId + ", status: "
                      + e.getResponse().getStatus(),
@@ -140,16 +141,6 @@ public class OulAdapter
          }
          return oulMapper.toOperativUppgift(endUppgiftResponse);
       }
-      catch (NotFoundException e)
-      {
-         throw new OulException(OulException.ErrorType.NOT_FOUND,
-               "Ingen operativ uppgift hittades med id: " + uppgiftId, e);
-      }
-      catch (BadRequestException e)
-      {
-         throw new OulException(OulException.ErrorType.BAD_REQUEST,
-               "Felaktig förfrågan vid avslut av operativ uppgift med id: " + uppgiftId, e);
-      }
       catch (ProcessingException e)
       {
          throw new OulException(OulException.ErrorType.SERVICE_UNAVAILABLE,
@@ -157,10 +148,20 @@ public class OulAdapter
       }
       catch (WebApplicationException e)
       {
-         throw new OulException(OulException.ErrorType.UNEXPECTED_ERROR,
-               "Oväntat fel vid avslut av operativ uppgift med id: " + uppgiftId + ", status: "
-                     + e.getResponse().getStatus(),
-               e);
+         switch (e.getResponse().getStatus())
+         {
+            case 400:
+               throw new OulException(OulException.ErrorType.BAD_REQUEST,
+                     "Felaktig förfrågan vid avslut av operativ uppgift med id: " + uppgiftId, e);
+            case 404:
+               throw new OulException(OulException.ErrorType.NOT_FOUND,
+                     "Ingen operativ uppgift hittades med id: " + uppgiftId, e);
+            default:
+               throw new OulException(OulException.ErrorType.UNEXPECTED_ERROR,
+                     "Oväntat fel vid avslut av operativ uppgift med id: " + uppgiftId + ", status: "
+                           + e.getResponse().getStatus(),
+                     e);
+         }
       }
    }
 
