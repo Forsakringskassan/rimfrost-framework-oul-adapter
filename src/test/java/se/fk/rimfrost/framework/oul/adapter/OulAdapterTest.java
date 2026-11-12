@@ -21,6 +21,7 @@ import se.fk.rimfrost.framework.oul.model.ImmutableOperativUppgift;
 import se.fk.rimfrost.framework.oul.model.ImmutableProcessInfo;
 import se.fk.rimfrost.framework.oul.model.OperativUppgift;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -161,6 +162,16 @@ public class OulAdapterTest
 
       assertNotNull(result);
       assertEquals(expected, result);
+   }
+
+   @Test
+   void endUppgiftIgnoresUnknownProperty() throws OulException
+   {
+      var unknownPropertyId = UUID.fromString("1faabd49-e7ae-4aed-8085-e93fc3d7cf3f");
+      var expected = operativUppgift();
+      Mockito.when(oulMapper.toOperativUppgift(any())).thenReturn(expected);
+
+      assertDoesNotThrow(() -> oulAdapter.endOperativUppgift(unknownPropertyId, "test-reason"));
    }
 
    // unassignOperativUppgift tests
