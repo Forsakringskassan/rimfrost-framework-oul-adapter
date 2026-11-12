@@ -2,6 +2,15 @@
 
 Changelog of rimfrost-framework-oul-adapter.
 
+## 1.2.2 (2026-11-12)
+
+### Bug Fixes
+
+-  Add support for ignoring unknown json properties ([abbdd](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/abbdd09203d6c00) Lars Persson)  
+
+### Dependency updates
+
+- update forsakringskassan/.github digest to cbc0db8 ([73571](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/73571d4a6b4a20e) renovate[bot])  
 ## 1.2.1 (2026-11-05)
 
 ### Bug Fixes
