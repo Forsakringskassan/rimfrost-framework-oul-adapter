@@ -2,6 +2,12 @@
 
 Changelog of rimfrost-framework-oul-adapter.
 
+## 1.2.3 (2026-11-18)
+
+### Bug Fixes
+
+-  bump rimfrost-service-oul-management-api-jaxrs-spec to 1.4.2 ([ebf3f](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/ebf3f4b3cdfb4ef) Ulf Slunga)  
+
 ## 1.2.2 (2026-11-12)
 
 ### Bug Fixes
