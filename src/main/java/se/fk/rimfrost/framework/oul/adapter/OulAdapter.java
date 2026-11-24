@@ -3,6 +3,8 @@ package se.fk.rimfrost.framework.oul.adapter;
 import jakarta.annotation.PreDestroy;
 import se.fk.rimfrost.framework.oul.exception.OulException;
 import se.fk.rimfrost.framework.oul.model.CreateOperativUppgiftRequest;
+import se.fk.rimfrost.framework.oul.model.Idtyp;
+import se.fk.rimfrost.framework.oul.model.ImmutableIdtyp;
 import se.fk.rimfrost.framework.oul.model.OperativUppgift;
 import se.fk.rimfrost.oul.management.jaxrsspec.controllers.generatedsource.UppgifterApi;
 import se.fk.rimfrost.oul.management.regler.jaxrsspec.controllers.generatedsource.ReglerApi;
@@ -17,6 +19,8 @@ import org.glassfish.jersey.apache5.connector.Apache5ConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.glassfish.jersey.client.proxy.WebResourceFactory;
+
+import java.util.Optional;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -165,4 +169,44 @@ public class OulAdapter
       }
    }
 
+   public Optional<Idtyp> getOperativeUppgiftUtforare(UUID uppgiftId) throws OulException
+   {
+      try
+      {
+         var response = oulClient.getUppgiftUtforare(uppgiftId);
+
+         if (response == null)
+         {
+            throw new OulException(OulException.ErrorType.UNEXPECTED_ERROR,
+                  "Oväntat fel vid hämtning av utförare för uppgift. response är null för operativ uppgift med id: " + uppgiftId);
+         }
+
+         var utforare = response.getUtforare();
+
+         if (utforare == null)
+         {
+            return Optional.empty();
+         }
+
+         return Optional.of(ImmutableIdtyp.builder().typId(utforare.getTypId()).varde(utforare.getVarde()).build());
+      }
+      catch (ProcessingException e)
+      {
+         throw new OulException(OulException.ErrorType.SERVICE_UNAVAILABLE,
+               "Kunde inte nå oul service vid hämtning av utförare för operativ uppgift med id: " + uppgiftId, e);
+      }
+      catch (WebApplicationException e)
+      {
+         if (e.getResponse().getStatus() == 404)
+         {
+            throw new OulException(OulException.ErrorType.NOT_FOUND,
+                  "Ingen operativ uppgift hittades med id: " + uppgiftId, e);
+         }
+
+         throw new OulException(OulException.ErrorType.UNEXPECTED_ERROR,
+               "Oväntat fel vid hämtning av utförare för operativ uppgift med id: " + uppgiftId + ", status: "
+                     + e.getResponse().getStatus(),
+               e);
+      }
+   }
 }
