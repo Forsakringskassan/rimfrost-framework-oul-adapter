@@ -2,6 +2,15 @@
 
 Changelog of rimfrost-framework-oul-adapter.
 
+## 1.2.4 (2026-11-24)
+
+### Bug Fixes
+
+-  Fix a spelling error in method name ([54ce6](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/54ce6261c74a2b7) Lars Persson)  
+-  Add support for fetching uppgift utforare ([48667](https://github.com/Forsakringskassan/rimfrost-framework-oul-adapter/commit/48667ac08eab875) Lars Persson)  
+
+## rimfrost-1_3 (2026-11-18)
+
 ## 1.2.3 (2026-11-18)
 
 ### Bug Fixes
