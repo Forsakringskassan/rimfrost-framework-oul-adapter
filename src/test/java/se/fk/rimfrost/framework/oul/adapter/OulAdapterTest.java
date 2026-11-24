@@ -222,7 +222,7 @@ public class OulAdapterTest
       server.stubFor(WireMock.get(WireMock.urlPathMatching("/uppgifter/[^/]+/utforare"))
             .willReturn(WireMock.aResponse().withStatus(404)));
 
-      var exception = assertThrows(OulException.class, () -> oulAdapter.getOperativeUppgiftUtforare(UPPGIFT_ID));
+      var exception = assertThrows(OulException.class, () -> oulAdapter.getOperativUppgiftUtforare(UPPGIFT_ID));
       assertEquals(OulException.ErrorType.NOT_FOUND, exception.getErrorType());
       assertEquals(0, server.findUnmatchedRequests().getRequests().size());
    }
@@ -233,7 +233,7 @@ public class OulAdapterTest
       server.stubFor(WireMock.get(WireMock.urlPathMatching("/uppgifter/[^/]+/utforare"))
             .willReturn(WireMock.aResponse().withFault(Fault.CONNECTION_RESET_BY_PEER)));
 
-      var exception = assertThrows(OulException.class, () -> oulAdapter.getOperativeUppgiftUtforare(UPPGIFT_ID));
+      var exception = assertThrows(OulException.class, () -> oulAdapter.getOperativUppgiftUtforare(UPPGIFT_ID));
       assertEquals(OulException.ErrorType.SERVICE_UNAVAILABLE, exception.getErrorType());
    }
 
@@ -243,7 +243,7 @@ public class OulAdapterTest
       server.stubFor(WireMock.get(WireMock.urlPathMatching("/uppgifter/[^/]+/utforare"))
             .willReturn(WireMock.aResponse().withStatus(500)));
 
-      var exception = assertThrows(OulException.class, () -> oulAdapter.getOperativeUppgiftUtforare(UPPGIFT_ID));
+      var exception = assertThrows(OulException.class, () -> oulAdapter.getOperativUppgiftUtforare(UPPGIFT_ID));
       assertEquals(OulException.ErrorType.UNEXPECTED_ERROR, exception.getErrorType());
    }
 
@@ -253,7 +253,7 @@ public class OulAdapterTest
       server.stubFor(WireMock.get(WireMock.urlPathMatching("/uppgifter/[^/]+/utforare"))
             .willReturn(WireMock.aResponse().withHeader("Content-Type", "application/json").withBody((String) null)));
 
-      var exception = assertThrows(OulException.class, () -> oulAdapter.getOperativeUppgiftUtforare(UPPGIFT_ID));
+      var exception = assertThrows(OulException.class, () -> oulAdapter.getOperativUppgiftUtforare(UPPGIFT_ID));
       assertEquals(OulException.ErrorType.UNEXPECTED_ERROR, exception.getErrorType());
    }
 
@@ -264,7 +264,7 @@ public class OulAdapterTest
             .willReturn(WireMock.aResponse().withHeader("Content-Type", "application/json")
                   .withBody("{\"utforare\": {\"typ_id\": \"abcd\", \"varde\": \"1234\"}}")));
 
-      var utforare = oulAdapter.getOperativeUppgiftUtforare(UUID.randomUUID());
+      var utforare = oulAdapter.getOperativUppgiftUtforare(UUID.randomUUID());
 
       assertTrue(utforare.isPresent());
       assertEquals("abcd", utforare.get().typId());
@@ -277,7 +277,7 @@ public class OulAdapterTest
       server.stubFor(WireMock.get(WireMock.urlPathMatching("/uppgifter/[^/]+/utforare"))
             .willReturn(WireMock.aResponse().withHeader("Content-Type", "application/json").withBody("{\"utforare\": null}")));
 
-      var utforare = oulAdapter.getOperativeUppgiftUtforare(UUID.randomUUID());
+      var utforare = oulAdapter.getOperativUppgiftUtforare(UUID.randomUUID());
 
       assertTrue(utforare.isEmpty());
    }

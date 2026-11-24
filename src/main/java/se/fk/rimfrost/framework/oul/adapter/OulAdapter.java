@@ -169,7 +169,7 @@ public class OulAdapter
       }
    }
 
-   public Optional<Idtyp> getOperativeUppgiftUtforare(UUID uppgiftId) throws OulException
+   public Optional<Idtyp> getOperativUppgiftUtforare(UUID uppgiftId) throws OulException
    {
       try
       {
